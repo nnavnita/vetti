@@ -2,4 +2,4 @@
 
 A flutter app that provides suggestions to pass time
 
-![](img/view.png)
+<img src="img/view.png" width="40%">
