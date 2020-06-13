@@ -161,23 +161,31 @@ class _SuggestionPageState extends State<SuggestionPage> {
                                           child: Center(
                                               child: Text(
                                                   "${snapshot.data.activity}")))),
-                                  Row(children: <Widget>[
-                                    Row(children: <Widget>[
-                                      Padding(
-                                          padding: EdgeInsets.only(
-                                              left: 20.0,
-                                              right: 10.0,
-                                              top: 10.0,
-                                              bottom: 10.0),
-                                          child: Icon(Icons.group,
-                                              color: Colors.white)),
-                                      Text('${snapshot.data.participants}',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold))
-                                    ]),
-                                    Text("${snapshot.data.type}")
-                                  ])
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Row(children: <Widget>[
+                                          Padding(
+                                              padding: EdgeInsets.only(
+                                                  left: 20.0,
+                                                  right: 10.0,
+                                                  top: 10.0,
+                                                  bottom: 10.0),
+                                              child: Icon(Icons.group,
+                                                  color: Colors.white)),
+                                          Text('${snapshot.data.participants}',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold))
+                                        ]),
+                                        Text("${snapshot.data.type}",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w200,
+                                                decoration:
+                                                    TextDecoration.underline))
+                                      ])
                                 ]))
                           ])),
                       Padding(
