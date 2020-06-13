@@ -182,9 +182,7 @@ class _SuggestionPageState extends State<SuggestionPage> {
                                         Text("${snapshot.data.type}",
                                             style: TextStyle(
                                                 color: Colors.white,
-                                                fontWeight: FontWeight.w200,
-                                                decoration:
-                                                    TextDecoration.underline))
+                                                fontWeight: FontWeight.w200))
                                       ])
                                 ]))
                           ])),
