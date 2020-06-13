@@ -103,10 +103,14 @@ class _SuggestionPageState extends State<SuggestionPage> {
     futureData = fetchData();
   }
 
-  void handleTap() {
+  void handleMoreTap() {
     setState(() {
       futureData = fetchData();
     });
+  }
+
+  void handleFilterTap() {
+    print('filter');
   }
 
   @override
@@ -168,8 +172,8 @@ class _SuggestionPageState extends State<SuggestionPage> {
                                         Row(children: <Widget>[
                                           Padding(
                                               padding: EdgeInsets.only(
-                                                  left: 20.0,
-                                                  right: 10.0,
+                                                  left: 10.0,
+                                                  right: 5.0,
                                                   top: 10.0,
                                                   bottom: 10.0),
                                               child: Icon(Icons.group,
@@ -179,10 +183,26 @@ class _SuggestionPageState extends State<SuggestionPage> {
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.bold))
                                         ]),
-                                        Text("${snapshot.data.type}",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w200))
+                                        Padding(
+                                            padding: EdgeInsets.only(
+                                                right: 10.0,
+                                                top: 10.0,
+                                                bottom: 10.0),
+                                            child: Row(children: <Widget>[
+                                              Padding(
+                                                  padding: EdgeInsets.only(
+                                                      right: 5.0),
+                                                  child: Text("for",
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight: FontWeight
+                                                              .w300))),
+                                              Text("${snapshot.data.type}",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w500))
+                                            ]))
                                       ])
                                 ]))
                           ])),
@@ -192,11 +212,11 @@ class _SuggestionPageState extends State<SuggestionPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
                                 RaisedButton(
-                                    onPressed: handleTap,
+                                    onPressed: handleMoreTap,
                                     color: Colors.orange[300],
                                     child: Text('More')),
                                 FlatButton(
-                                    onPressed: () => {print('filters')},
+                                    onPressed: handleFilterTap,
                                     child: Text('Filter'))
                               ]))
                     ]));
