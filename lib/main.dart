@@ -251,6 +251,7 @@ class _SuggestionPageState extends State<SuggestionPage> {
                     child: Column(children: <Widget>[
                       Image.asset('img/inapp.png'),
                       Card(
+                          elevation: 0.2,
                           shape: RoundedRectangleBorder(
                             side: BorderSide(color: Colors.white70, width: 1),
                             borderRadius: BorderRadius.circular(15),
