@@ -8,8 +8,7 @@ void main() {
   runApp(MyApp());
 }
 
-Future<Data> fetchData(
-    {String url = 'http://www.boredapi.com/api/activity'}) async {
+Future<Data> fetchData(String url) async {
   final response = await http.get(url);
 
   if (response.statusCode == 200) {
@@ -96,21 +95,109 @@ class SuggestionPage extends StatefulWidget {
 
 class _SuggestionPageState extends State<SuggestionPage> {
   Future<Data> futureData;
+  String url;
+  String participants;
+  String genre;
 
   @override
   void initState() {
     super.initState();
-    futureData = fetchData();
+    url = 'http://www.boredapi.com/api/activity';
+    futureData = fetchData(url);
+    participants = 'any';
+    genre = 'any';
   }
 
   void handleMoreTap() {
+    if (participants == 'any') {
+      if (genre == 'any') {
+        setState(() {
+          futureData = fetchData(url);
+        });
+      } else {
+        setState(() {
+          futureData = fetchData('${url.toString()}?type=${genre.toString()}');
+        });
+      }
+    } else {
+      if (genre == 'any') {
+        setState(() {
+          futureData = fetchData(
+              '${url.toString()}?participants=${participants.toString()}');
+        });
+      } else {
+        setState(() {
+          futureData = fetchData(
+              '${url.toString()}?participants=${participants.toString()}&type=${genre.toString()}');
+        });
+      }
+    }
+  }
+
+  void handleParticipants(String newValue) {
     setState(() {
-      futureData = fetchData();
+      participants = newValue;
     });
   }
 
+  void handleGenres(String newValue) {
+    setState(() {
+      genre = newValue;
+    });
+  }
+
+  void handleFilterSelectionTap() {
+    Navigator.pop(context);
+    handleMoreTap();
+  }
+
   void handleFilterTap() {
-    print('filter');
+    showDialog(
+        context: context,
+        child: new AlertDialog(
+            content: new Column(children: <Widget>[
+          Row(children: <Widget>[
+            Text("Participants"),
+            DropdownButton<String>(
+              items:
+                  <String>['any', '1', '2', '3', '4', '5'].map((String value) {
+                return new DropdownMenuItem<String>(
+                  value: value,
+                  child: new Text(value),
+                );
+              }).toList(),
+              onChanged: handleParticipants,
+            )
+          ]),
+          Row(children: <Widget>[
+            Text("Genre"),
+            DropdownButton<String>(
+              items: <String>[
+                'any',
+                'busywork',
+                'charity',
+                'cooking',
+                'diy',
+                'education',
+                'music',
+                'recreational',
+                'relaxation',
+                'social'
+              ].map((String value) {
+                return new DropdownMenuItem<String>(
+                  value: value,
+                  child: new Text(value),
+                );
+              }).toList(),
+              onChanged: handleGenres,
+            )
+          ]),
+          RaisedButton(
+              onPressed: handleFilterSelectionTap,
+              color: Colors.orange[300],
+              child: Text('Apply filters',
+                  style: TextStyle(fontWeight: FontWeight.w300)))
+        ])));
   }
 
   @override
@@ -146,11 +233,28 @@ class _SuggestionPageState extends State<SuggestionPage> {
             future: futureData,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
+                String activity = '';
+                String participants = '';
+                String genre = '';
+                if (snapshot.data.activity == 'null') {
+                  activity =
+                      "Oops! Looks like we can't find a suitable activity 😔, please check your filters.";
+                  participants = '-';
+                  genre = '-';
+                } else {
+                  activity = snapshot.data.activity;
+                  participants = snapshot.data.participants;
+                  genre = snapshot.data.type;
+                }
                 return Padding(
                     padding: EdgeInsets.all(40.0),
                     child: Column(children: <Widget>[
-                      Image.asset('img/logo.png'),
+                      Image.asset('img/inapp.png'),
                       Card(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(color: Colors.white70, width: 1),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
                           color: Colors.teal[300],
                           child: Column(children: <Widget>[
                             Padding(
@@ -158,13 +262,18 @@ class _SuggestionPageState extends State<SuggestionPage> {
                                     horizontal: 40.0, vertical: 20.0),
                                 child: Column(children: <Widget>[
                                   Card(
+                                      shape: RoundedRectangleBorder(
+                                        side: BorderSide(
+                                            color: Colors.white70, width: 1),
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
                                       elevation: 0.0,
                                       child: Padding(
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 20.0, vertical: 20.0),
                                           child: Center(
                                               child: Text(
-                                                  "${snapshot.data.activity}")))),
+                                                  "${activity.toString()}")))),
                                   Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -178,10 +287,9 @@ class _SuggestionPageState extends State<SuggestionPage> {
                                                   bottom: 10.0),
                                               child: Icon(Icons.group,
                                                   color: Colors.white)),
-                                          Text('${snapshot.data.participants}',
+                                          Text('${participants.toString()}',
                                               style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold))
+                                                  color: Colors.white))
                                         ]),
                                         Padding(
                                             padding: EdgeInsets.only(
@@ -197,7 +305,7 @@ class _SuggestionPageState extends State<SuggestionPage> {
                                                           color: Colors.white,
                                                           fontWeight: FontWeight
                                                               .w300))),
-                                              Text("${snapshot.data.type}",
+                                              Text("${genre.toString()}",
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
@@ -214,10 +322,15 @@ class _SuggestionPageState extends State<SuggestionPage> {
                                 RaisedButton(
                                     onPressed: handleMoreTap,
                                     color: Colors.orange[300],
-                                    child: Text('More')),
+                                    child: Text('More',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w300))),
                                 FlatButton(
+                                    // onPressed: handleFilterTap,
                                     onPressed: handleFilterTap,
-                                    child: Text('Filter'))
+                                    child: Text('Filter',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w300)))
                               ]))
                     ]));
               } else if (snapshot.hasError) {
