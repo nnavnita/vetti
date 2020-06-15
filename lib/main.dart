@@ -154,50 +154,62 @@ class _SuggestionPageState extends State<SuggestionPage> {
   void handleFilterTap() {
     showDialog(
         context: context,
-        child: new AlertDialog(
-            content: new Column(children: <Widget>[
-          Row(children: <Widget>[
-            Text("Participants"),
-            DropdownButton<String>(
-              items:
-                  <String>['any', '1', '2', '3', '4', '5'].map((String value) {
-                return new DropdownMenuItem<String>(
-                  value: value,
-                  child: new Text(value),
-                );
-              }).toList(),
-              onChanged: handleParticipants,
-            )
-          ]),
-          Row(children: <Widget>[
-            Text("Genre"),
-            DropdownButton<String>(
-              items: <String>[
-                'any',
-                'busywork',
-                'charity',
-                'cooking',
-                'diy',
-                'education',
-                'music',
-                'recreational',
-                'relaxation',
-                'social'
-              ].map((String value) {
-                return new DropdownMenuItem<String>(
-                  value: value,
-                  child: new Text(value),
-                );
-              }).toList(),
-              onChanged: handleGenres,
-            )
-          ]),
-          RaisedButton(
-              onPressed: handleFilterSelectionTap,
-              color: Colors.orange[300],
-              child: Text('Apply filters',
-                  style: TextStyle(fontWeight: FontWeight.w300)))
-        ])));
+        builder: (context) => AlertDialog(
+                content: new Wrap(children: <Widget>[
+              Column(children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text("Participants"),
+                          DropdownButton<String>(
+                            value: participants,
+                            items: <String>['any', '1', '2', '3', '4', '5']
+                                .map((String value) {
+                              return new DropdownMenuItem<String>(
+                                value: value,
+                                child: new Text(value),
+                              );
+                            }).toList(),
+                            onChanged: handleParticipants,
+                          )
+                        ])),
+                Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text("Genre"),
+                          DropdownButton<String>(
+                            value: genre,
+                            items: <String>[
+                              'any',
+                              'busywork',
+                              'charity',
+                              'cooking',
+                              'diy',
+                              'education',
+                              'music',
+                              'recreational',
+                              'relaxation',
+                              'social'
+                            ].map((String value) {
+                              return new DropdownMenuItem<String>(
+                                value: value,
+                                child: new Text(value),
+                              );
+                            }).toList(),
+                            onChanged: handleGenres,
+                          )
+                        ])),
+                RaisedButton(
+                    onPressed: handleFilterSelectionTap,
+                    color: Colors.orange[300],
+                    child: Text('Apply filters',
+                        style: TextStyle(fontWeight: FontWeight.w300)))
+              ])
+            ])));
   }
 
   @override
@@ -251,7 +263,7 @@ class _SuggestionPageState extends State<SuggestionPage> {
                     child: Column(children: <Widget>[
                       Image.asset('img/inapp.png'),
                       Card(
-                          elevation: 0.2,
+                          elevation: 0.5,
                           shape: RoundedRectangleBorder(
                             side: BorderSide(color: Colors.white70, width: 1),
                             borderRadius: BorderRadius.circular(15),
