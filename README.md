@@ -1,8 +1,8 @@
-# vetti
+# Vetti
 
 A flutter app that provides suggestions to pass time using [Bored API](https://www.boredapi.com/).
 
-## screenshots
+## Screenshots
 ### iOS
 <img src="img/screenshots/ios.jpg" height="700px" width="350px" />
 
