@@ -1,4 +1,4 @@
-# vetti
+# Vetti
 
 A flutter app that provides suggestions to pass time using [Bored API](https://www.boredapi.com/).
 
